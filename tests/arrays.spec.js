@@ -125,10 +125,35 @@ describe("Arrays", function () {
 
                 expect(sut).toBe(temp);
             });
-
-
         })
 
+        describe("weeklyAverage", function () {
+            beforeEach(function () {
+                temps = new Temps();
+            });
+           it("should compute the average temps for the week at the supplied index", function () {
+                var weekOneTemps = [50, 60, 70, 70, 55, 65, 80];
+               var week = 0;
+               temps.dataStore[week] = weekOneTemps;
+
+               var expected = (50 + 60 + 70 + 70 + 55 + 65 + 80) / 7;
+               var sut = temps.weekAverage(week);
+
+               expect(sut).toBe(expected);
+           });
+
+            it("display should return the correct output", function () {
+                var weekOneTemps = [50, 60, 70, 70, 55, 65, 80];
+                var week = 0;
+                temps.dataStore[week] = weekOneTemps;
+
+                var ave = (50 + 60 + 70 + 70 + 55 + 65 + 80) / 7;
+                var expected = "Week 1's average temp was " + ave + ".\n";
+                var sut = temps.displayWeekAverage(week);
+
+                expect(sut).toBe(expected);
+            });
+        });
     });
 
 });
