@@ -61,7 +61,7 @@ describe("Arrays", function () {
         })
 
         it("print should return the array in order, as a string", function () {
-           var sut = words.print();
+            var sut = words.print();
             var expected = "hello, there";
             expect(sut).toBe(expected);
         });
@@ -110,8 +110,8 @@ describe("Arrays", function () {
             });
 
             it(" should insert the supplied date in the correct position in the array", function () {
-               var date = 13,
-                   temp = 85;
+                var date = 13,
+                    temp = 85;
                 temps.add(temp, date);
                 var sut = temps.dataStore[1][6];
 
@@ -131,16 +131,16 @@ describe("Arrays", function () {
             beforeEach(function () {
                 temps = new Temps();
             });
-           it("should compute the average temps for the week at the supplied index", function () {
+            it("should compute the average temps for the week at the supplied index", function () {
                 var weekOneTemps = [50, 60, 70, 70, 55, 65, 80];
-               var week = 0;
-               temps.dataStore[week] = weekOneTemps;
+                var week = 0;
+                temps.dataStore[week] = weekOneTemps;
 
-               var expected = (50 + 60 + 70 + 70 + 55 + 65 + 80) / 7;
-               var sut = temps.weekAverage(week);
+                var expected = (50 + 60 + 70 + 70 + 55 + 65 + 80) / 7;
+                var sut = temps.weekAverage(week);
 
-               expect(sut).toBe(expected);
-           });
+                expect(sut).toBe(expected);
+            });
 
             it("display should return the correct output", function () {
                 var weekOneTemps = [50, 60, 70, 70, 55, 65, 80];
@@ -150,6 +150,60 @@ describe("Arrays", function () {
                 var ave = (50 + 60 + 70 + 70 + 55 + 65 + 80) / 7;
                 var expected = "Week 1's average temp was " + ave + ".\n";
                 var sut = temps.displayWeekAverage(week);
+
+                expect(sut).toBe(expected);
+            });
+        });
+
+        describe("monthlyAverage", function () {
+            beforeEach(function () {
+                temps = new Temps();
+            });
+            it("should compute the average temp for all supplied temps for the month", function () {
+                var weekOneTemps = [50, 60, 70, 70, 55, 65, 80],
+                    weekTwoTemps = [55, 65, 75, 75, 50, 60, 80],
+                    weekThreeTemps = [40, 50, 60, 60, 45, 75, 90],
+                    weekFourTemps = [58, 68, 78, 78, 58, 68, 88],
+                    DAYS_IN_MONTH = 28;
+
+                temps.dataStore[0] = weekOneTemps;
+                temps.dataStore[1] = weekTwoTemps;
+                temps.dataStore[2] = weekThreeTemps;
+                temps.dataStore[3] = weekFourTemps;
+
+                var weekOneTotal = (50 + 60 + 70 + 70 + 55 + 65 + 80),
+                    weekTwoTotal = (55 + 65 + 75 + 75 + 50 + 60 + 80),
+                    weekThreeTotal = (40 + 50 + 60 + 60 + 45 + 75 + 90),
+                    weekFourTotal = (58 + 68 + 78 + 78 + 58 + 68 + 88);
+
+                var expected = (weekOneTotal + weekTwoTotal + weekThreeTotal + weekFourTotal) / DAYS_IN_MONTH;
+                var sut = temps.monthAverage();
+
+                expect(sut).toBe(expected);
+            });
+
+            it("display should return the correct output", function () {
+                var weekOneTemps = [50, 60, 70, 70, 55, 65, 80],
+                    weekTwoTemps = [55, 65, 75, 75, 50, 60, 80],
+                    weekThreeTemps = [40, 50, 60, 60, 45, 75, 90],
+                    weekFourTemps = [58, 68, 78, 78, 58, 68, 88],
+                    DAYS_IN_WEEK = 7;
+
+                temps.dataStore[0] = weekOneTemps;
+                temps.dataStore[1] = weekTwoTemps;
+                temps.dataStore[2] = weekThreeTemps;
+                temps.dataStore[3] = weekFourTemps;
+
+                var weekOneAve = (50 + 60 + 70 + 70 + 55 + 65 + 80) / DAYS_IN_WEEK,
+                    weekTwoAve = (55 + 65 + 75 + 75 + 50 + 60 + 80) / DAYS_IN_WEEK,
+                    weekThreeAve = (40 + 50 + 60 + 60 + 45 + 75 + 90) / DAYS_IN_WEEK,
+                    weekFourAve = (58 + 68 + 78 + 78 + 58 + 68 + 88) / DAYS_IN_WEEK;
+
+                var expected = "Week 1's average temp was " + weekOneAve + ".\n" +
+                    "Week 2's average temp was " + weekTwoAve + ".\n" +
+                    "Week 3's average temp was " + weekThreeAve + ".\n" +
+                    "Week 4's average temp was " + weekFourAve + ".\n";
+                var sut = temps.displayAllWeekAverages();
 
                 expect(sut).toBe(expected);
             });

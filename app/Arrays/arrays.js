@@ -40,12 +40,12 @@
         }
         return arr;
     };
-    function temps () {
+    function temps() {
         // using fixed values for this exercise
         var NUM_ROWS = 4,
             NUM_COLS = 7
 
-        function getLocation (date) {
+        function getPosition(date) {
             if (date < 1 || date > 28)
                 throw new Error("I can only use dates between 1 and 28!");
 
@@ -62,8 +62,8 @@
             dataStore: Array.matrix(NUM_ROWS, NUM_COLS, 0),
             add: function (temp, date) {
                 date = date || 1;
-                var location = getLocation(date);
-                this.dataStore[location.week][location.day] = temp;
+                var position = getPosition(date);
+                this.dataStore[position.week][position.day] = temp;
             },
             weekAverage: function (week) {
                 var weekTemps = this.dataStore[week];
@@ -72,7 +72,7 @@
             monthAverage: function () {
                 var total = 0, i = 0,
                     totalDays = ( NUM_ROWS * NUM_COLS );
-                for ( ; i < NUM_ROWS; ++i ) {
+                for (; i < NUM_ROWS; ++i) {
                     total += this.dataStore[i].reduce(sum);
                 }
 
@@ -82,10 +82,12 @@
                 return "Week " + (weekIndex + 1) + "'s average temp was " + this.weekAverage(weekIndex) + ".\n";
             },
             displayAllWeekAverages: function () {
-                var i = 0;
-                for ( ; i < NUM_ROWS; ++i ) {
-                    displayWeekAverage(i);
+                var i = 0, ret = "";
+                for (; i < NUM_ROWS; ++i) {
+                    ret += this.displayWeekAverage(i);
                 }
+
+                return ret;
             }
 
         }
