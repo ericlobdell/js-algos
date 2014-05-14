@@ -91,9 +91,25 @@
             }
 
         }
+
+
     }
 
+    function letters () {
+        return {
+            dataStore: [],
+            add: function (letter) {
+                this.dataStore.push(letter);
+            },
+            toString: function () {
+                return this.dataStore.join("");
+            }
+        }
+    }
+
+    window.Letters = letters;
     window.Temps = temps;
     window.Grades = grades;
     window.Words = words;
+
 })(window || {});

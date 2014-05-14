@@ -210,4 +210,38 @@ describe("Arrays", function () {
         });
     });
 
+    describe("window.Letters", function () {
+        var letters;
+       beforeEach(function () {
+            letters = new Letters();
+       });
+        it("should have an add function", function () {
+            expect(letters.add).toBeDefined();
+        });
+        it("should have a toString function", function () {
+            expect(letters.toString).toBeDefined();
+        });
+        it("should have a dataStore property", function () {
+            expect(letters.dataStore).toBeDefined();
+        });
+
+        it("add should add a given letter to the dataStore", function () {
+            expect(letters.dataStore.length).toBe(0);
+            letters.add("a");
+            expect(letters.dataStore.length).toBe(1);
+            expect(letters.dataStore[0]).toBe("a");
+        });
+
+        it("toString should return the array of letters as a word", function () {
+            letters.add("c");
+            letters.add("a");
+            letters.add("t");
+
+            var sut = letters.toString();
+            var expected = "cat";
+
+            expect(sut).toBe(expected);
+        });
+    });
+
 });
