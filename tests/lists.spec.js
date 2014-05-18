@@ -19,7 +19,7 @@ describe("List", function () {
         expect(emptyList.length()).toBe(0);
     });
 
-    iit("should throw an error if initialized with something other than an array", function () {
+    it("should throw an error if initialized with something other than an array", function () {
         var msg = "The list can only be initialized with an array of items";
         expect(function () { new List({0: "item"}) }).toThrow(msg);
         expect(function () { new List({"key": "item"}) }).toThrow(msg);
@@ -50,17 +50,20 @@ describe("List", function () {
     describe("clear", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
         });
-        it("should set the dataStore back to an empty array", function () {
+        it("should remove all items in th list", function () {
+            expect(list.length()).toBe(4);
             list.clear();
-            expect(list.dataStore instanceof Array).toBe(true);
-            expect(list.dataStore.length).toBe(0);
+            expect(list.length()).toBe(0);
         });
 
         it("should set the current position to zero", function () {
             list.moveTo(2);
-
+            expect(list.currentPos()).toBe(2);
             list.clear();
             expect(list.currentPos()).toBe(0);
         });
@@ -73,7 +76,10 @@ describe("List", function () {
     describe("find", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
         });
         it("should return the position in the list of the element provided", function () {
             var sut = list.find(2),
@@ -97,13 +103,16 @@ describe("List", function () {
     describe("toString", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
         });
         it("should return the dataStore so the caller can do what they want with it.", function () {
-            var expected = list.dataStore;
+            var expected = [1,2,3,4];
             var sut = list.toString();
 
-            expect(sut).toBe(expected);
+            expect(sut).toEqual(expected);
         });
     });
 
@@ -117,7 +126,10 @@ describe("List", function () {
             list = new List();
              after = 3;
              newElement = 100;
-            list.dataStore = [1,2,3,4];
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
         });
         it("should call find to locate the supplied element, to insert the new element after", function () {
             spyOn(list, "find");
@@ -153,12 +165,12 @@ describe("List", function () {
             expect(sut).toBe(false);
         });
 
-        it("should increment the listSize property", function () {
-            expect(list.listSize).toBe(0);
+        it("should increment the list size", function () {
+            expect(list.length()).toBe(4);
 
             list.insert(newElement, after);
 
-            expect(list.listSize).toBe(1);
+            expect(list.length()).toBe(5);
         });
     });
 
@@ -169,8 +181,11 @@ describe("List", function () {
     describe("append", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
-            list.listSize = list.dataStore.length;
+
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
         });
         it("should add th element to the end of the list", function () {
             var newElement = 5;
@@ -187,9 +202,9 @@ describe("List", function () {
                 expectedBefore = 4,
                 expectedAfter = 5;
 
-            expect(list.listSize).toBe(expectedBefore);
+            expect(list.length()).toBe(expectedBefore);
             list.append(newElement);
-            expect(list.listSize).toBe(expectedAfter);
+            expect(list.length()).toBe(expectedAfter);
         });
     });
 
@@ -200,8 +215,10 @@ describe("List", function () {
     describe("remove", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
-            list.listSize = list.dataStore.length;
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
         });
         it("should remove the element from the list", function () {
             var expectedBefore = 1,
@@ -220,12 +237,12 @@ describe("List", function () {
             var expectedBefore = 4,
                 expectedAfter = 3;
 
-            var sutBefore = list.listSize;
+            var sutBefore = list.length();
             expect(sutBefore).toBe(expectedBefore);
 
             list.remove(2);
 
-            var sutAfter = list.listSize;
+            var sutAfter = list.length();
             expect(sutAfter).toBe(expectedAfter);
         });
 
@@ -247,16 +264,21 @@ describe("List", function () {
     describe("front", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
-            list.pos = 1;
+
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
+
+            list.moveTo(1);
         });
 
         it("should set the lis.pos property to zero", function () {
-             expect(list.pos).toEqual(1);
+             expect(list.currentPos()).toEqual(1);
 
             list.front();
 
-            expect(list.pos).toEqual(0);
+            expect(list.currentPos()).toEqual(0);
         });
     });
 
@@ -267,17 +289,21 @@ describe("List", function () {
     describe("end", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
-            list.listSize = list.dataStore.length;
-            list.pos = 1;
+
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
+
+            list.moveTo(1);
         });
 
         it("should set the lis.pos property to the last index in the list", function () {
-            expect(list.pos).toEqual(1);
+            expect(list.currentPos()).toEqual(1);
 
             list.end();
 
-            expect(list.pos).toEqual(3);
+            expect(list.currentPos()).toEqual(3);
         });
     });
 
@@ -288,34 +314,38 @@ describe("List", function () {
     describe("prev", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
-            list.listSize = list.dataStore.length;
-            list.pos = 1;
+
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
+
+            list.moveTo(1);
         });
 
         it("should set the lis.pos property to the previous index in the list", function () {
-            expect(list.pos).toEqual(1);
+            expect(list.currentPos()).toEqual(1);
 
             list.prev();
 
-            expect(list.pos).toEqual(0);
+            expect(list.currentPos()).toEqual(0);
         });
 
         it("should do nothing if the current position is zero or negative", function () {
-            expect(list.pos).toEqual(1);
+            expect(list.currentPos()).toEqual(1);
 
             list.prev();
 
-            expect(list.pos).toEqual(0);
+            expect(list.currentPos()).toEqual(0);
 
             list.prev();
 
-            expect(list.pos).toEqual(0);
+            expect(list.currentPos()).toEqual(0);
 
-            list.pos = -1;
+            list.moveTo(-1);
             list.prev();
 
-            expect(list.pos).toEqual(-1);
+            expect(list.currentPos()).toEqual(-1);
         });
     });
 
@@ -326,30 +356,34 @@ describe("List", function () {
     describe("next", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
-            list.listSize = list.dataStore.length;
-            list.pos = 1;
+
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
+
+            list.moveTo(1);
         });
 
         it("should set the lis.pos property to the next index in the list", function () {
-            expect(list.pos).toEqual(1);
+            expect(list.currentPos()).toEqual(1);
 
             list.next();
 
-            expect(list.pos).toEqual(2);
+            expect(list.currentPos()).toEqual(2);
         });
 
         it("should do nothing if the current position is the last index in the list", function () {
-            expect(list.pos).toEqual(1);
+            expect(list.currentPos()).toEqual(1);
 
             list.next();
-            expect(list.pos).toEqual(2);
+            expect(list.currentPos()).toEqual(2);
 
             list.end();
-            expect(list.pos).toEqual(3);
+            expect(list.currentPos()).toEqual(3);
 
             list.next();
-            expect(list.pos).toEqual(3);
+            expect(list.currentPos()).toEqual(3);
         });
     });
 
@@ -360,8 +394,12 @@ describe("List", function () {
     describe("length", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
-            list.listSize = list.dataStore.length;
+
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
+
         });
 
         it("should return the value of the listSize property", function () {
@@ -377,8 +415,13 @@ describe("List", function () {
     describe("curentPos", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
-            list.pos = 1;
+
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
+
+            list.moveTo(1);
         });
 
         it("should return the value of the pos property", function () {
@@ -394,13 +437,17 @@ describe("List", function () {
     describe("moveTo", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
-            list.pos = 1;
+
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
+
         });
 
         it("should set the pos property to the supplied value", function () {
             var sut = list.currentPos();
-            expect(sut).toEqual(1);
+            expect(sut).toEqual(0);
 
             list.moveTo(2);
             sut = list.currentPos();
@@ -415,8 +462,13 @@ describe("List", function () {
     describe("getElement", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
-            list.pos = 1;
+
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
+
+            list.moveTo(1);
         });
 
         it("should return the element at the index of the current pos value", function () {
@@ -432,7 +484,11 @@ describe("List", function () {
     describe("contains", function () {
         beforeEach(function () {
             list = new List();
-            list.dataStore = [1,2,3,4];
+
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
         });
 
         it("should return true for an element in the list", function () {
