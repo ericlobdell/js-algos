@@ -199,16 +199,16 @@
     <h1>Code coverage report for <span class="entity">Lists/List.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">9.76% <small>(4 / 41)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">26.42% <small>(14 / 53)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Branches: <span class="metric">7.14% <small>(1 / 14)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Branches: <span class="metric">37.93% <small>(11 / 29)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">11.76% <small>(2 / 17)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">16.67% <small>(3 / 18)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">9.76% <small>(4 / 41)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">26.42% <small>(14 / 53)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         Ignored: <span class="metric"><span class="ignore-none">none</span></span> &nbsp;&nbsp;&nbsp;&nbsp;
     </h2>
@@ -307,18 +307,64 @@
 89
 90
 91
-92</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-yes">1</span>
-<span class="cline-any cline-yes">38</span>
+<span class="cline-any cline-yes">5</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">4</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -403,82 +449,105 @@
  */
 &nbsp;
 (function (window) {
-    function list() {
+    function list(items) {
+        var dataStore = [],
+            pos = 0,
+            listSize = 0;
+&nbsp;
+        if (items) {
+            <span class="missing-if-branch" title="else path not taken" >E</span>if (!isArraylike( items ))
+                throw new Error("The list can only be initialized with an array of items");
+&nbsp;
+<span class="cstat-no" title="statement not covered" >            dataStore =  items;</span>
+<span class="cstat-no" title="statement not covered" >            listSize = dataStore.length;</span>
+        }
+&nbsp;
+        function isArraylike( obj ) {
+            var length = obj.length,
+                type = (typeof obj);
+&nbsp;
+            if (type === "string")
+                return false;
+&nbsp;
+            <span class="missing-if-branch" title="if path not taken" >I</span>if ( obj.nodeType === 1 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >length </span>) {
+<span class="cstat-no" title="statement not covered" >                return true;</span>
+            }
+&nbsp;
+            return type === "array" || length === 0 ||
+                typeof length === "number" &amp;&amp; <span class="branch-3 cbranch-no" title="branch not covered" >length &gt; 0 </span>&amp;&amp; <span class="branch-4 cbranch-no" title="branch not covered" >( length - 1 ) in obj;</span>
+        }
+&nbsp;
         return {
-            listSize: this.dataStore.length,
-            pos: 0,
-            dataStore: [],
             clear: <span class="fstat-no" title="function not covered" >function () {</span>
-<span class="cstat-no" title="statement not covered" >                delete this.dataStore;</span>
-<span class="cstat-no" title="statement not covered" >                this.dataStore = [];</span>
-<span class="cstat-no" title="statement not covered" >                this.listSize = this.pos = 0;</span>
+<span class="cstat-no" title="statement not covered" >                dataStore = [];</span>
+<span class="cstat-no" title="statement not covered" >                listSize = pos = 0;</span>
             },
             find: <span class="fstat-no" title="function not covered" >function (ele) {</span>
 <span class="cstat-no" title="statement not covered" >                var i = 0,</span>
-                    len = this.dataStore.length;
+                    len = dataStore.length;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >                for (; i &lt; len; ++i) {</span>
-<span class="cstat-no" title="statement not covered" >                    if (this.dataStore[i] === ele)</span>
+<span class="cstat-no" title="statement not covered" >                    if (dataStore[i] === ele)</span>
 <span class="cstat-no" title="statement not covered" >                        return i;</span>
                 }
 <span class="cstat-no" title="statement not covered" >                return -1;</span>
             },
             toString: <span class="fstat-no" title="function not covered" >function () {</span>
-<span class="cstat-no" title="statement not covered" >                return this.dataStore;</span>
+<span class="cstat-no" title="statement not covered" >                return dataStore;</span>
             },
             insert: <span class="fstat-no" title="function not covered" >function (ele, after) {</span>
 <span class="cstat-no" title="statement not covered" >                var insertPos = this.find(after);</span>
 <span class="cstat-no" title="statement not covered" >                if(insertPos &gt; -1) {</span>
-<span class="cstat-no" title="statement not covered" >                    this.dataStore.splice(insertPos + 1, 0, ele);</span>
-<span class="cstat-no" title="statement not covered" >                    ++this.listSize;</span>
+<span class="cstat-no" title="statement not covered" >                    dataStore.splice(insertPos + 1, 0, ele);</span>
+<span class="cstat-no" title="statement not covered" >                    ++listSize;</span>
 <span class="cstat-no" title="statement not covered" >                    return true;</span>
                 }
 <span class="cstat-no" title="statement not covered" >                return false;</span>
             },
             append: <span class="fstat-no" title="function not covered" >function (ele) {</span>
-<span class="cstat-no" title="statement not covered" >                this.dataStore[this.listSize++] = ele;</span>
+<span class="cstat-no" title="statement not covered" >                dataStore[listSize++] = ele;</span>
             },
             remove: <span class="fstat-no" title="function not covered" >function (ele) {</span>
 <span class="cstat-no" title="statement not covered" >                var foundAt = this.find(ele);</span>
 <span class="cstat-no" title="statement not covered" >                if (foundAt &gt; -1) {</span>
-<span class="cstat-no" title="statement not covered" >                    this.dataStore.splice(foundAt, 1);</span>
-<span class="cstat-no" title="statement not covered" >                    --this.listSize;</span>
+<span class="cstat-no" title="statement not covered" >                    dataStore.splice(foundAt, 1);</span>
+<span class="cstat-no" title="statement not covered" >                    --listSize;</span>
 <span class="cstat-no" title="statement not covered" >                    return true;</span>
                 }
 <span class="cstat-no" title="statement not covered" >                return false;</span>
             },
             front: <span class="fstat-no" title="function not covered" >function () {</span>
-<span class="cstat-no" title="statement not covered" >                this.pos = 0;</span>
+<span class="cstat-no" title="statement not covered" >                pos = 0;</span>
             },
             end: <span class="fstat-no" title="function not covered" >function () {</span>
-<span class="cstat-no" title="statement not covered" >                this.pos = this.listSize - 1;</span>
+<span class="cstat-no" title="statement not covered" >                pos = listSize - 1;</span>
             },
             prev: <span class="fstat-no" title="function not covered" >function () {</span>
-<span class="cstat-no" title="statement not covered" >                if (this.pos &gt; 0)</span>
-<span class="cstat-no" title="statement not covered" >                    --this.pos;</span>
+<span class="cstat-no" title="statement not covered" >                if (pos &gt; 0)</span>
+<span class="cstat-no" title="statement not covered" >                    --pos;</span>
             },
             next: <span class="fstat-no" title="function not covered" >function () {</span>
-<span class="cstat-no" title="statement not covered" >                if (this.pos &lt; this.listSize - 1)</span>
-<span class="cstat-no" title="statement not covered" >                    ++this.pos;</span>
+<span class="cstat-no" title="statement not covered" >                if (pos &lt; listSize - 1)</span>
+<span class="cstat-no" title="statement not covered" >                    ++pos;</span>
             },
             length: <span class="fstat-no" title="function not covered" >function () {</span>
-<span class="cstat-no" title="statement not covered" >                return this.listSize;</span>
+<span class="cstat-no" title="statement not covered" >                return listSize;</span>
             },
             currentPos: <span class="fstat-no" title="function not covered" >function () {</span>
-<span class="cstat-no" title="statement not covered" >                return this.pos;</span>
+<span class="cstat-no" title="statement not covered" >                return pos;</span>
             },
             moveTo: <span class="fstat-no" title="function not covered" >function (position) {</span>
-<span class="cstat-no" title="statement not covered" >                this.pos = position;</span>
+<span class="cstat-no" title="statement not covered" >                pos = position;</span>
             },
             getElement: <span class="fstat-no" title="function not covered" >function () {</span>
-<span class="cstat-no" title="statement not covered" >                return this.dataStore[this.pos];</span>
+<span class="cstat-no" title="statement not covered" >                return dataStore[pos];</span>
             },
             contains: <span class="fstat-no" title="function not covered" >function (ele) {</span>
 <span class="cstat-no" title="statement not covered" >                var i = 0,</span>
-                    len = this.dataStore.length;
+                    len = dataStore.length;
 &nbsp;
 <span class="cstat-no" title="statement not covered" >                for (; i &lt; len; ++i) {</span>
-<span class="cstat-no" title="statement not covered" >                    if (this.dataStore[i] === ele)</span>
+<span class="cstat-no" title="statement not covered" >                    if (dataStore[i] === ele)</span>
 <span class="cstat-no" title="statement not covered" >                        return true;</span>
                 }
 <span class="cstat-no" title="statement not covered" >                return false;</span>
@@ -494,7 +563,7 @@
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri May 16 2014 19:20:53 GMT-0400 (EDT)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat May 17 2014 21:27:22 GMT-0400 (EDT)</div>
 </div>
 
 <script src="../prettify.js"></script>

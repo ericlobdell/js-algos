@@ -11,6 +11,38 @@ describe("List", function () {
         expect(list).toBeDefined();
     });
 
+    it("should optionally accept an array as an argument to initialize the list", function () {
+        var list = new List([1,2,3]);
+        expect(list.length()).toBe(3);
+
+        var emptyList = new List();
+        expect(emptyList.length()).toBe(0);
+    });
+
+    iit("should throw an error if initialized with something other than an array", function () {
+        var msg = "The list can only be initialized with an array of items";
+        expect(function () { new List({0: "item"}) }).toThrow(msg);
+        expect(function () { new List({"key": "item"}) }).toThrow(msg);
+        expect(function () { new List(1) }).toThrow(msg);
+        expect(function () { new List("not an array") }).toThrow(msg);
+
+    });
+
+    it("should not expose the dataStore property", function () {
+         expect(list.hasOwnProperty("dataStore")).toBe(false);
+        expect(list.dataStore).not.toBeDefined();
+    });
+
+    it("should not expose the pos property", function () {
+        expect(list.hasOwnProperty("pos")).toBe(false);
+        expect(list.pos).not.toBeDefined();
+    });
+
+    it("should not expose the listSize property", function () {
+        expect(list.hasOwnProperty("listSize")).toBe(false);
+        expect(list.listSize).not.toBeDefined();
+    });
+
     it("should have a clear function to clear the items in the list", function () {
         expect(list.clear).toBeDefined();
     });
@@ -27,10 +59,10 @@ describe("List", function () {
         });
 
         it("should set the current position to zero", function () {
-            list.pos = 2;
+            list.moveTo(2);
 
             list.clear();
-            expect(list.pos).toBe(0);
+            expect(list.currentPos()).toBe(0);
         });
     });
 

@@ -3,82 +3,105 @@
  */
 
 (function (window) {
-    function list() {
+    function list(items) {
+        var dataStore = [],
+            pos = 0,
+            listSize = 0;
+
+        if (items) {
+            if (!isArraylike( items ))
+                throw new Error("The list can only be initialized with an array of items");
+
+            dataStore =  items;
+            listSize = dataStore.length;
+        }
+
+        function isArraylike( obj ) {
+            var length = obj.length,
+                type = (typeof obj);
+
+            if (type === "string")
+                return false;
+
+            if ( obj.nodeType === 1 && length ) {
+                return true;
+            }
+
+            return type === "array" || length === 0 ||
+                typeof length === "number" && length > 0 && ( length - 1 ) in obj;
+        }
+
         return {
-            listSize: 0,
-            pos: 0,
-            dataStore: [],
             clear: function () {
-                delete this.dataStore;
-                this.dataStore = [];
-                this.listSize = this.pos = 0;
+                dataStore = [];
+                listSize = pos = 0;
             },
             find: function (ele) {
                 var i = 0,
-                    len = this.dataStore.length;
+                    len = dataStore.length;
 
                 for (; i < len; ++i) {
-                    if (this.dataStore[i] === ele)
+                    if (dataStore[i] === ele)
                         return i;
                 }
                 return -1;
             },
             toString: function () {
-                return this.dataStore;
+                return dataStore;
             },
             insert: function (ele, after) {
                 var insertPos = this.find(after);
                 if(insertPos > -1) {
-                    this.dataStore.splice(insertPos + 1, 0, ele);
-                    ++this.listSize;
+                    dataStore.splice(insertPos + 1, 0, ele);
+                    ++listSize;
                     return true;
                 }
                 return false;
             },
             append: function (ele) {
-                this.dataStore[this.listSize++] = ele;
+                dataStore[listSize++] = ele;
             },
             remove: function (ele) {
                 var foundAt = this.find(ele);
                 if (foundAt > -1) {
-                    this.dataStore.splice(foundAt, 1);
-                    --this.listSize;
+                    dataStore.splice(foundAt, 1);
+                    --listSize;
                     return true;
                 }
                 return false;
             },
             front: function () {
-                this.pos = 0;
+                pos = 0;
             },
             end: function () {
-                this.pos = this.listSize - 1;
+                pos = listSize - 1;
             },
             prev: function () {
-                if (this.pos > 0)
-                    --this.pos;
+                if (pos > 0)
+                    --pos;
             },
             next: function () {
-                if (this.pos < this.listSize - 1)
-                    ++this.pos;
+                if (pos < listSize - 1)
+                    ++pos;
             },
             length: function () {
-                return this.listSize;
+                return listSize;
             },
             currentPos: function () {
-                return this.pos;
+                return pos;
             },
             moveTo: function (position) {
-                this.pos = position;
+                pos = position;
             },
             getElement: function () {
-                return this.dataStore[this.pos];
+                return dataStore[pos];
             },
             contains: function (ele) {
                 var i = 0,
-                    len = this.dataStore.length;
+                    len = dataStore.length;
 
                 for (; i < len; ++i) {
-                    if (this.dataStore[i] === ele)
+                    if (dataStore[i] === ele)
                         return true;
                 }
                 return false;
