@@ -10,7 +10,7 @@
 
         if (items) {
             if (!isArraylike( items ))
-                throw new Error("The list can only be initialized with an array of items");
+                throw new Error("The list can only be initialized with an array.");
 
             dataStore =  items;
             listSize = dataStore.length;
@@ -29,6 +29,15 @@
 
             return type === "array" || length === 0 ||
                 typeof length === "number" && length > 0 && ( length - 1 ) in obj;
+        }
+
+        function isLarger (ele) {
+            var i = 0, len = dataStore.length;
+            for (; i < len; ++i) {
+                if (ele <= dataStore[i])
+                    return false;
+            }
+            return true;
         }
 
         return {
@@ -105,6 +114,26 @@
                         return true;
                 }
                 return false;
+            },
+            insertIfLarger: function (ele, after) {
+                if (isLarger(ele))
+                    return this.insert(ele, after);
+                return false;
+            },
+            insertIfSmaller: function (ele, after) {
+                if (!this.contains(ele) && !isLarger(ele))
+                    return this.insert(ele, after);
+                return false;
+            },
+            filter: function (key, value) {
+                var matches = [], i = 0, len = dataStore.length, current;
+                for ( ; i < len; ++i) {
+                    current = dataStore[i];
+                    if (current[key] === value) {
+                        matches.push(current);
+                    }
+                }
+                return matches;
             }
         }
     };
@@ -112,3 +141,4 @@
     window.List = list;
 
 })(window || {});
+

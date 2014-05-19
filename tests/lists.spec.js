@@ -20,7 +20,7 @@ describe("List", function () {
     });
 
     it("should throw an error if initialized with something other than an array", function () {
-        var msg = "The list can only be initialized with an array of items";
+        var msg = "The list can only be initialized with an array.";
         expect(function () { new List({0: "item"}) }).toThrow(msg);
         expect(function () { new List({"key": "item"}) }).toThrow(msg);
         expect(function () { new List(1) }).toThrow(msg);
@@ -173,6 +173,150 @@ describe("List", function () {
             expect(list.length()).toBe(5);
         });
     });
+
+    it("should have an insertIfLarger function to allow inserting an element at a certain position, only if the element is larger than all other elements in the list", function () {
+        expect(list.insertIfLarger()).toBeDefined();
+    });
+
+    describe("insertIfLarger", function () {
+        var after, newElement, listAlpha;
+        beforeEach(function () {
+            list = new List();
+            after = 3;
+            newElement = 100;
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
+            list.append(11);
+
+            listAlpha = new List(["a", "b", "c"]);
+        });
+        it("should return true if number is larger", function () {
+            var sut1 = list.insertIfLarger(12, 4);
+            expect(sut1).toBe(true);
+        });
+
+        it("should return true if number with zeros is larger; 100 > 11", function () {
+            var sut1 = list.insertIfLarger(100, 4);
+            expect(sut1).toBe(true);
+        });
+
+        it("should return false if number is not larger", function () {
+            var sut1 = list.insertIfLarger(3, 4);
+            expect(sut1).toBe(false);
+        });
+
+        it("should return true if item is alphabetically larger", function () {
+            var sut1 = listAlpha.insertIfLarger("d", "c");
+            expect(sut1).toBe(true);
+
+            var sut2 = listAlpha.insertIfLarger("eid", "c");
+            expect(sut2).toBe(true);
+        });
+
+        it("should return false if item is not alphabetically larger", function () {
+            var sut1 = listAlpha.insertIfLarger("b", "c");
+            expect(sut1).toBe(false);
+
+            var sut2 = listAlpha.insertIfLarger("aeiou", "c");
+            expect(sut2).toBe(false);
+        });
+
+        it("should call insert if item is larger", function () {
+            spyOn(list, "insert");
+
+            list.insertIfLarger(20, 4);
+
+            expect(list.insert).toHaveBeenCalledWith(20, 4);
+        });
+
+        it("should not call insert if item is not larger", function () {
+            spyOn(list, "insert");
+
+            list.insertIfLarger(3, 4);
+
+            expect(list.insert).not.toHaveBeenCalled();
+        });
+    });
+
+    it("should have an insertIfSmaller function to allow inserting an element at a certain position, only if the element is smaller than all other elements in the list", function () {
+        expect(list.insertIfSmaller()).toBeDefined();
+    });
+
+    describe("insertIfSmaller", function () {
+        var after, newElement, listAlpha;
+        beforeEach(function () {
+            list = new List();
+            after = 3;
+            newElement = 100;
+            list.append(1);
+            list.append(2);
+            list.append(3);
+            list.append(4);
+            list.append(11);
+
+            listAlpha = new List(["a", "b", "c", "h"]);
+        });
+        it("should return false if number is larger", function () {
+            var sut1 = list.insertIfSmaller(12, 4);
+            expect(sut1).toBe(false);
+        });
+
+        it("should return false if number is equal", function () {
+            var sut1 = list.insertIfSmaller(2, 4);
+            expect(sut1).toBe(false);
+        });
+
+        it("should return false if alpha is equal", function () {
+            var sut1 = list.insertIfSmaller("b", "c");
+            expect(sut1).toBe(false);
+        });
+
+        it("should return false if number with zeros is larger; 100 > 11", function () {
+            var sut1 = list.insertIfSmaller(100, 4);
+            expect(sut1).toBe(false);
+        });
+
+        it("should return true if number is not larger", function () {
+            var sut1 = list.insertIfSmaller(7, 4);
+            expect(sut1).toBe(true);
+        });
+
+        it("should return false if item is alphabetically larger", function () {
+            var sut1 = listAlpha.insertIfSmaller("i", "c");
+            expect(sut1).toBe(false);
+
+            var sut2 = listAlpha.insertIfSmaller("id", "c");
+            expect(sut2).toBe(false);
+        });
+
+        it("should return true if item is not alphabetically larger", function () {
+            var sut1 = listAlpha.insertIfSmaller("bb", "c");
+            expect(sut1).toBe(true);
+
+            var sut2 = listAlpha.insertIfSmaller("aeiou", "c");
+            expect(sut2).toBe(true);
+        });
+
+        it("should call insert if item is smaller", function () {
+            spyOn(list, "insert");
+
+            list.insertIfSmaller(6, 4);
+
+            expect(list.insert).toHaveBeenCalledWith(6, 4);
+        });
+
+        it("should not call insert if item is larger", function () {
+            spyOn(list, "insert");
+
+            list.insertIfSmaller(20, 4);
+
+            expect(list.insert).not.toHaveBeenCalled();
+        });
+    });
+
+
 
     it("should have an append function to add an element to th end of the list", function () {
         expect(list.append).toBeDefined();
@@ -502,5 +646,36 @@ describe("List", function () {
         });
     })
 
-    
+    it("should have a filter function to filter lists of objects", function () {
+        expect(list.filter).toBeDefined();
+    })
+
+    describe("filter", function () {
+        var people;
+        beforeEach(function () {
+            people = new List();
+            people.append({name: "p1", gender: "male"});
+            people.append({name: "p2", gender: "male"});
+            people.append({name: "p3", gender: "female"});
+            people.append({name: "p4", gender: "male"});
+            people.append({name: "p5", gender: "female"});
+
+        })
+
+        it("should return an array of objects that match the key, value pair sent in", function () {
+            var males = people.filter("gender", "male");
+            expect(males.length).toBe(3);
+
+            males.forEach(function (p) {
+                expect(p.gender).toEqual("male");
+            });
+
+            var females = people.filter("gender", "female");
+            expect(females.length).toBe(2);
+
+            females.forEach(function (p) {
+                expect(p.gender).toEqual("female");
+            });
+        })
+    });
 });
