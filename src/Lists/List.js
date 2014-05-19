@@ -137,7 +137,6 @@
             }
         }
     };
-
     window.List = list;
 
 })(window || {});
