@@ -89,4 +89,23 @@ describe("Stack", function () {
         });
     });
 
+    // exercises
+
+    describe("exercises", function () {
+        it("isPalindrome should return true if word is a palindrome", function () {
+            var sut = isPalindrome("noon");
+            expect(sut).toBe(true);
+        });
+
+        it("isPalindrome should return true if phrase is a palindrome", function () {
+            var sut = isPalindrome("never odd or even");
+            expect(sut).toBe(true);
+        });
+
+        it("isPalindrome should return false if word is not a palindrome", function () {
+            var sut = isPalindrome("none");
+            expect(sut).toBe(false);
+        });
+    });
+
 });

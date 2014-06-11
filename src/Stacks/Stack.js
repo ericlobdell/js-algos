@@ -1,7 +1,7 @@
 /**
  * Created by eric on 5/19/14.
  */
-(function () {
+(function (window) {
     function stack() {
         var dataStore = [], top = 0;
 
