@@ -1,12 +1,12 @@
 /**
  * Created by eric on 5/19/14.
  */
-(function (window) {
-    function stack() {
+(function ( window ) {
+    function stack () {
         var dataStore = [], top = 0;
 
         return {
-            push: function (ele) {
+            push: function ( ele ) {
                 dataStore[top++] = ele;
             },
             peek: function () {
@@ -23,8 +23,8 @@
             length: function () {
                 return top;
             }
-        }
+        };
     }
 
     window.Stack = stack;
-})(window);
+})( window );

@@ -359,7 +359,8 @@
 141
 142
 143
-144</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
+144
+145</td><td class="line-coverage"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -498,6 +499,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -506,25 +508,25 @@
  * Created by eric on 5/14/14.
  */
 &nbsp;
-(function (window) {
-    function list(items) {
+(function ( window ) {
+    function list ( items ) {
         var dataStore = [],
             pos = 0,
             listSize = 0;
 &nbsp;
-        if (items) {
-            if (!isArraylike( items ))
-                throw new Error("The list can only be initialized with an array.");
+        if ( items ) {
+            if ( !isArraylike( items ) )
+                throw new Error( "The list can only be initialized with an array." );
 &nbsp;
-            dataStore =  items;
+            dataStore = items;
             listSize = dataStore.length;
         }
 &nbsp;
-        function isArraylike( obj ) {
+        function isArraylike ( obj ) {
             var length = obj.length,
                 type = (typeof obj);
 &nbsp;
-            if (type === "string")
+            if ( type === "string" )
                 return false;
 &nbsp;
             <span class="missing-if-branch" title="if path not taken" >I</span>if ( obj.nodeType === 1 &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >length </span>) {
@@ -535,10 +537,10 @@
                 typeof length === "number" &amp;&amp; length &gt; 0 &amp;&amp; ( length - 1 ) in obj;
         }
 &nbsp;
-        function isLarger (ele) {
+        function isLarger ( ele ) {
             var i = 0, len = dataStore.length;
-            for (; i &lt; len; ++i) {
-                if (ele &lt;= dataStore[i])
+            for ( ; i &lt; len; ++i ) {
+                if ( ele &lt;= dataStore[i] )
                     return false;
             }
             return true;
@@ -549,12 +551,12 @@
                 dataStore = [];
                 listSize = pos = 0;
             },
-            find: function (ele) {
+            find: function ( ele ) {
                 var i = 0,
                     len = dataStore.length;
 &nbsp;
-                for (; i &lt; len; ++i) {
-                    if (dataStore[i] === ele)
+                for ( ; i &lt; len; ++i ) {
+                    if ( dataStore[i] === ele )
                         return i;
                 }
                 return -1;
@@ -562,22 +564,22 @@
             toString: function () {
                 return dataStore;
             },
-            insert: function (ele, after) {
-                var insertPos = this.find(after);
-                if(insertPos &gt; -1) {
-                    dataStore.splice(insertPos + 1, 0, ele);
+            insert: function ( ele, after ) {
+                var insertPos = this.find( after );
+                if ( insertPos &gt; -1 ) {
+                    dataStore.splice( insertPos + 1, 0, ele );
                     ++listSize;
                     return true;
                 }
                 return false;
             },
-            append: function (ele) {
+            append: function ( ele ) {
                 dataStore[listSize++] = ele;
             },
-            remove: function (ele) {
-                var foundAt = this.find(ele);
-                if (foundAt &gt; -1) {
-                    dataStore.splice(foundAt, 1);
+            remove: function ( ele ) {
+                var foundAt = this.find( ele );
+                if ( foundAt &gt; -1 ) {
+                    dataStore.splice( foundAt, 1 );
                     --listSize;
                     return true;
                 }
@@ -590,11 +592,11 @@
                 pos = listSize - 1;
             },
             prev: function () {
-                if (pos &gt; 0)
+                if ( pos &gt; 0 )
                     --pos;
             },
             next: function () {
-                if (pos &lt; listSize - 1)
+                if ( pos &lt; listSize - 1 )
                     ++pos;
             },
             length: function () {
@@ -603,54 +605,55 @@
             currentPos: function () {
                 return pos;
             },
-            moveTo: function (position) {
+            moveTo: function ( position ) {
                 pos = position;
             },
             getElement: function () {
                 return dataStore[pos];
             },
-            contains: function (ele) {
+            contains: function ( ele ) {
                 var i = 0,
                     len = dataStore.length;
 &nbsp;
-                for (; i &lt; len; ++i) {
-                    if (dataStore[i] === ele)
+                for ( ; i &lt; len; ++i ) {
+                    if ( dataStore[i] === ele )
                         return true;
                 }
                 return false;
             },
-            insertIfLarger: function (ele, after) {
-                if (isLarger(ele))
-                    return this.insert(ele, after);
+            insertIfLarger: function ( ele, after ) {
+                if ( isLarger( ele ) )
+                    return this.insert( ele, after );
                 return false;
             },
-            insertIfSmaller: function (ele, after) {
-                if (!this.contains(ele) &amp;&amp; !isLarger(ele))
-                    return this.insert(ele, after);
+            insertIfSmaller: function ( ele, after ) {
+                if ( !this.contains( ele ) &amp;&amp; !isLarger( ele ) )
+                    return this.insert( ele, after );
                 return false;
             },
-            filter: function (key, value) {
+            filter: function ( key, value ) {
                 var matches = [], i = 0, len = dataStore.length, current;
-                for ( ; i &lt; len; ++i) {
+                for ( ; i &lt; len; ++i ) {
                     current = dataStore[i];
-                    if (current[key] === value) {
-                        matches.push(current);
+                    if ( current[key] === value ) {
+                        matches.push( current );
                     }
                 }
                 return matches;
             }
-        }
-    };
+        };
+    }
+&nbsp;
     window.List = list;
 &nbsp;
-})(window || <span class="branch-1 cbranch-no" title="branch not covered" >{})</span>;
+})( window || <span class="branch-1 cbranch-no" title="branch not covered" >{} </span>);
 &nbsp;
 &nbsp;</pre></td></tr>
 </table></pre>
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Jun 10 2014 20:48:02 GMT-0400 (EDT)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Jun 14 2014 18:51:42 GMT-0400 (EDT)</div>
 </div>
 
 <script src="../prettify.js"></script>
